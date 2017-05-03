@@ -17,15 +17,7 @@ class JobSpecification extends Component {
       metaDataFolderSelected: false,
       jobFilepath: 'jobFilepath',
       jobFilepathSelected: false,
-      sendButtonDisabled: true
     };
-  }
-  enableDisableSendButton = () => {
-    if (this.state.jobFilepathSelected && this.state.metaDataFolderSelected) {
-      this.setState({ sendButtonDisabled: false });
-    } else {
-      this.setState({ sendButtonDisabled: true });
-    }
   }
   selectJobSpecsFile = () => {
     console.log('called selectJobSpecsFile');
@@ -36,15 +28,9 @@ class JobSpecification extends Component {
       this.setState({ jobFilepath: '' });
     } else {
       // console.log('going to set the filename and boolean' + fileNames);
-      if (this.state.metaDataFolderSelected) {
-        this.setState({ sendButtonDisabled: false });
-      } else {
-        this.setState({ sendButtonDisabled: true });
-      }
       this.setState({ jobFilepathSelected: true });
       this.setState({ jobFilepath: fileNames[0] });
     }
-    // this.enableDisableSendButton();
     // NOTE put this back in when the first part is working
     // persistData('jobFilePersistKey', fileNames[0]);
     console.log('end of selectJobSpecsFile');
@@ -63,15 +49,9 @@ class JobSpecification extends Component {
     } else {
       console.log('path returned from dialog.showOpenDialog select a folder is....> ' + path);
       // console.log('path[0] is....> ' + path[0]);
-      if (this.state.jobFilepathSelected) {
-        this.setState({ sendButtonDisabled: false });
-      } else {
-        this.setState({ sendButtonDisabled: true });
-      }
       this.setState({ metaDataFolderSelected: true });
       this.setState({ metaDataFolder: path[0] });
     }
-    // this.enableDisableSendButton();
     // NOTE put this back in when the first part is working
     // persistData('metaDataPersistKey', path[0]);
     console.log('end of selectMetaDataFile');
