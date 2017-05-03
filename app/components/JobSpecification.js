@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import electron from 'electron';
-import jQuery from 'jquery';
+import $ from 'jquery';
 // import PropTypes from 'prop-types';
 //  import { Link } from 'react-router-dom';
 //  import styles from './LoginForm.css';
@@ -17,7 +17,15 @@ class JobSpecification extends Component {
       metaDataFolderSelected: false,
       jobFilepath: 'jobFilepath',
       jobFilepathSelected: false,
+      sendButtonDisabled: true
     };
+  }
+  enableDisableSendButton = () => {
+    if (this.state.jobFilepathSelected && this.state.metaDataFolderSelected) {
+      this.setState({ sendButtonDisabled: false });
+    } else {
+      this.setState({ sendButtonDisabled: true });
+    }
   }
   selectJobSpecsFile = () => {
     console.log('called selectJobSpecsFile');
@@ -28,9 +36,15 @@ class JobSpecification extends Component {
       this.setState({ jobFilepath: '' });
     } else {
       // console.log('going to set the filename and boolean' + fileNames);
+      if (this.state.metaDataFolderSelected) {
+        this.setState({ sendButtonDisabled: false });
+      } else {
+        this.setState({ sendButtonDisabled: true });
+      }
       this.setState({ jobFilepathSelected: true });
       this.setState({ jobFilepath: fileNames[0] });
     }
+    // this.enableDisableSendButton();
     // NOTE put this back in when the first part is working
     // persistData('jobFilePersistKey', fileNames[0]);
     console.log('end of selectJobSpecsFile');
@@ -49,19 +63,33 @@ class JobSpecification extends Component {
     } else {
       console.log('path returned from dialog.showOpenDialog select a folder is....> ' + path);
       // console.log('path[0] is....> ' + path[0]);
+      if (this.state.jobFilepathSelected) {
+        this.setState({ sendButtonDisabled: false });
+      } else {
+        this.setState({ sendButtonDisabled: true });
+      }
       this.setState({ metaDataFolderSelected: true });
       this.setState({ metaDataFolder: path[0] });
     }
+    // this.enableDisableSendButton();
     // NOTE put this back in when the first part is working
     // persistData('metaDataPersistKey', path[0]);
     console.log('end of selectMetaDataFile');
   }
   render() {
-    /* if (this.state.jobFilepathSelected && this.state.metaDataFolderSelected) {
-      jQuery('#sendButton').removeAttr('disabled');
+    /*
+    if (this.state.jobFilepathSelected && this.state.metaDataFolderSelected) {
+      $('#sendButton').removeAttr('disabled');
     } else {
-      jQuery('#sendButton').attr('disabled', 'true');
-    }*/
+      $('#sendButton').attr('disabled', 'true');
+    }
+    */
+    let itemButton;
+    if (this.state.jobFilepathSelected && this.state.metaDataFolderSelected) {
+      itemButton = <button type="submit" id="sendButton" className="btn btn-primary pull-left">Send</button>
+    } else {
+      itemButton = <button disabled="true" type="submit" id="sendButton" className="btn btn-primary pull-left">Send</button>
+    }
     return (
       <div className="panel panel-primary">
         <div className="panel-heading apt-addheading">Job</div>
@@ -96,12 +124,7 @@ class JobSpecification extends Component {
             </div>
             <div className="form-group">
               <div className="col-sm-offset-2 col-sm-10">
-                <button
-                  type="submit"
-                  id="sendButton"
-                  className="btn btn-primary pull-left"
-                  disabled
-                >Send</button>
+                {itemButton}
               </div>
             </div>
           </form>
