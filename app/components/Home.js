@@ -1,14 +1,26 @@
 // @flow
 import React, { Component } from 'react';
+import electron from 'electron';
+import appStorage from 'electron-json-storage';
 // using an ES6 transpiler, like babel
 // import Img from 'react-image';
 // import logo from './logo.svg';
-import jestpadded from './jest-padded-90.png';
-
 //  import { Link } from 'react-router-dom';
 // import styles from './Home.css';
 
+import jestpadded from './jest-padded-90.png';
 import LoginForm from '../components/LoginForm';
+import JobSpecification from '../components/JobSpecification';
+
+const app = electron.remote;
+const dialog = app.dialog;
+
+function persistData(storageKey, jsonData) {
+  console.log('inside persitComponent() and storage_key is ' + storageKey + ', and jsonData is, ' + jsonData);
+  // Write
+  // const appStorage = require('electron-json-storage');
+  appStorage.set(storageKey, jsonData, (error) => { if (error) throw error; });
+}
 
 export default class Home extends Component {
   constructor() {
@@ -17,20 +29,16 @@ export default class Home extends Component {
       emailUsername: 'anEmail@domain.top',
       passwordStateNotUsed: 'noPasswordy',
       inputText: 'this is something',
-      textInHome: 'text In Home'
+      textInHome: 'text In Home',
+      metaDataFolder: 'metaDataFolder initial state',
+      metaDataFolderSelected: false
     };
   }
   handleTryText(inputText) {
     const tryText = inputText;
-    console.log(inputText);
+    console.log('in handleTryText we have inputText as=>' + inputText);
     this.setState({ inputText: tryText });
   }
-  /*
-  mainOnChangeTextToHome(textToHome) {
-    const textToHometmp = textToHome;
-    console.log(textToHometmp);
-    this.setState({ textInHome: textToHometmp });
-  } */
   mainOnChangeTextToHome = (event) => {
     const target = event.target;
     console.log(target.name);
@@ -39,6 +47,7 @@ export default class Home extends Component {
       this.setState({ textInHome: target.value });
     }
   }
+
   mainHandleLogin(loginCredentials) {
     console.log(loginCredentials);
     const subuserName = loginCredentials.userName;
@@ -65,6 +74,8 @@ export default class Home extends Component {
             subHandleLogin={(loginCredentials) => this.mainHandleLogin(loginCredentials)}
             textToHome={this.state.textInHome}
             onChangeTextToHome={this.mainOnChangeTextToHome}
+          />
+          <JobSpecification
           />
         </div>
       </div>
