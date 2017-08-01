@@ -9,4 +9,6 @@ $yarn
 For Atom additions
 apm install editorconfig es6-javascript atom-ternjs javascript-snippets linter linter-eslint language-babel autocomplete-modules file-icons
 
-
+========================================================================
+npm start      to launch the application
+npm run dev    to launch the application with inspect mode (can also see the react chrome extension which gives the ability to see react variable values)
